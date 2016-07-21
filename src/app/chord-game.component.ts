@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['chord-game.component.css']
 })
 export class ChordGameAppComponent {
-  title = 'chord-game works!';
+  title = 'testing the game!';
 }

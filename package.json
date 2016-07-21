@@ -9,7 +9,10 @@
     "lint": "tslint \"src/**/*.ts\"",
     "format": "clang-format -i -style=file --glob=src/**/*.ts",
     "pree2e": "webdriver-manager update",
-    "e2e": "protractor"
+    "e2e": "protractor",
+    "build": "npm run build-prod && npm run copy",
+    "build-prod": "ng build -prod",
+    "copy": "rm -rf ../../public/cg/dist && cp -r dist ../../public/cg/dist"
   },
   "private": true,
   "dependencies": {
