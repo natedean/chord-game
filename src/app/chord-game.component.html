@@ -1,3 +1,10 @@
 <h1>
   {{title}}
 </h1>
+<div>{{ selectedChord.name }}</div>
+ <select class="browser-default" #t (change)="chordGameService.selectCategory$.next(t.value)">
+    <option *ngFor="let difficulty of difficulties" [value]="difficulty">{{difficulty}}</option>
+</select>
+<div *ngFor="let chord of chordGameService.chordList$ | async">
+  <span (click)="chordGameService.selectedChord$.next(chord.id)">{{ chord.name }}</span>
+</div>
