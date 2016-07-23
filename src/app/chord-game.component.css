@@ -1,3 +1,62 @@
-h1 {
-    color: teal;
+.layoutContainer {
+    display: flex;
+    height: 300px;
+    overflow: hidden;
+}
+
+.difficultyLabel {
+    margin-left: 0.5em;
+}
+
+.difficultySelect {
+    margin: 0.25em 0 1em 0;
+}
+
+.chordListContainer {
+    height: 200px;
+    width: 120px;
+    padding: 0.2em 0.5em;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    border: 1px solid #f2f2f2;
+    border-radius: 3px;
+}
+
+.rightContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.chordList-item {
+    display: block;
+    margin: 0.1em 0;
+    cursor: pointer;
+}
+
+.fretboard {
+    display: flex;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.87);
+    height: 200px;
+    width: 200px;
+}
+
+.fretboard-string {
+    flex: 1;
+    height: 100%;
+    width: 2px;
+    position: relative;
+    border-left: 1px solid rgba(0,0,0,0.87);
+}
+
+.fretboard-string:first-of-type {
+    border-left: none;
+}
+
+.selectedChordLabel {
+    height: 30px;
 }

@@ -1,10 +1,32 @@
-<h1>
-  {{title}}
-</h1>
-<div>{{ selectedChord.name }}</div>
- <select class="browser-default" #t (change)="chordGameService.selectCategory$.next(t.value)">
-    <option *ngFor="let difficulty of difficulties" [value]="difficulty">{{difficulty}}</option>
-</select>
-<div *ngFor="let chord of chordGameService.chordList$ | async">
-  <span (click)="chordGameService.selectedChord$.next(chord.id)">{{ chord.name }}</span>
+<div class="chordGame">
+  <h3 class="center">
+    {{title}}
+  </h3>
+  <div class="layoutContainer">
+    <div class="leftContainer">
+      <span class="difficultyLabel">Difficulty</span>
+      <select class="browser-default difficultySelect" #t 
+              (change)="chordGameService.selectCategory$.next(t.value)">
+        <option *ngFor="let difficulty of difficulties" [value]="difficulty">{{difficulty}}</option>
+      </select>
+      <div class="chordListContainer">
+        <div *ngFor="let chord of chordGameService.chordList$ | async">
+          <span class="chordList-item" (click)="chordGameService.selectedChord$.next(chord.id)">{{ chord.name }}</span>
+        </div>
+      </div>
+    </div><!--// leftContainer --> 
+    <div class="rightContainer">
+      <div class="selectedChordLabel">{{ selectedChord.name }}</div>
+      <div class="fretboard">
+        <div class="fretboard-string"></div>
+        <div class="fretboard-string"></div>
+        <div class="fretboard-string"></div>
+        <div class="fretboard-string"></div>
+        <div class="fretboard-string"></div>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+
