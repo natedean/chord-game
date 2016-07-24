@@ -26,7 +26,7 @@ export class ChordGameService {
     this.selectCategory$
        .startWith('easy')
        .map((difficulty: string) => {
-          return ChordMap.toList().filter((x: Chord) => x.difficulty === difficulty)
+          return ChordMap.toList().filter((x: Chord) => x.difficulty === difficulty);
       });
 
   public chordListReducer$ = 
@@ -36,7 +36,7 @@ export class ChordGameService {
   public selected$ = Observable.merge(
     this.selectedChordReducer$,
     this.chordListReducer$
-  ).scan((acc, fn) => fn(acc), ChordMap.first());
+  ).scan((acc: Chord, fn: any) => fn(acc), ChordMap.first());
     
   constructor() {}
 
