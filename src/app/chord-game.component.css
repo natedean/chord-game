@@ -57,8 +57,32 @@
     border-left: none;
 }
 
+.fretboard-string:last-of-type {
+    flex: 0;
+    border: none;
+}
+
+.fretboard-finger {
+    position: relative;
+    left: -0.8em;
+    font-weight: bold;
+    font-size: 1.3em;
+    width: 1.5em;
+    height: 1.5em;
+    text-align: center;
+}
+
+.fretboard-finger_circle {
+    border: 1px solid black;
+    background: #f2f2f2;
+    border-radius: 50%;
+}
+
 .selectedChordLabel {
     height: 30px;
+    font-weight: bold;
+    font-size: 1.3em;
+    margin-bottom: 1em;
 }
 
 .selectedListItem {

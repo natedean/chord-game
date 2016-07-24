@@ -20,7 +20,7 @@ export class ChordGameService {
   public selectCategory$ = new Subject();
 
   public selectedChordReducer$ = new Subject()
-    .map((x: string) => state => state = ChordMap.get(x));
+    .map((x: string) => (state: Chord) => state = ChordMap.get(x));
  
   public chordList$ = 
     this.selectCategory$
