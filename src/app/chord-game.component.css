@@ -60,3 +60,7 @@
 .selectedChordLabel {
     height: 30px;
 }
+
+.selectedListItem {
+    background: #f2f2f2;
+}

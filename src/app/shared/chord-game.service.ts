@@ -18,8 +18,9 @@ import { ChordMap, Chord } from  './chord-map';
 export class ChordGameService {
 
   public selectCategory$ = new Subject();
-  public selectedChord$ = new Subject()
-    .map((x: string) => ChordMap.get(x));
+
+  public selectedChordReducer$ = new Subject()
+    .map((x: string) => state => state = ChordMap.get(x));
  
   public chordList$ = 
     this.selectCategory$
@@ -28,8 +29,15 @@ export class ChordGameService {
           return ChordMap.toList().filter((x: Chord) => x.difficulty === difficulty)
       });
 
-      
+  public chordListReducer$ = 
+    this.chordList$.map(xs => state => state = xs.first())
+    .do(x => console.log(x));
 
+  public selected$ = Observable.merge(
+    this.selectedChordReducer$,
+    this.chordListReducer$
+  ).scan((acc, fn) => fn(acc), ChordMap.first());
+    
   constructor() {}
 
 }

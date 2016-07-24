@@ -16,7 +16,7 @@ export class ChordGameAppComponent {
   selectedChord = {};
 
   constructor(private chordGameService: ChordGameService) {
-    chordGameService.selectedChord$.subscribe(x => {
+    chordGameService.selected$.subscribe(x => {
       this.selectedChord = x;
     });
 

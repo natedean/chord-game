@@ -11,7 +11,11 @@
       </select>
       <div class="chordListContainer">
         <div *ngFor="let chord of chordGameService.chordList$ | async">
-          <span class="chordList-item" (click)="chordGameService.selectedChord$.next(chord.id)">{{ chord.name }}</span>
+          <span class="chordList-item" 
+                [ngClass]="{'selectedListItem': chord.id === selectedChord.id}"
+                (click)="chordGameService.selectedChordReducer$.next(chord.id)">
+                {{ chord.name }}
+          </span>
         </div>
       </div>
     </div><!--// leftContainer --> 
