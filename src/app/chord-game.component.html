@@ -22,12 +22,26 @@
     <div class="rightContainer">
       <div class="selectedChordLabel">{{ selectedChord.name }}</div>
       <div class="fretboard">
-        <div class="fretboard-string" *ngFor="let note of selectedChord.notes">
-          <div class="fretboard-finger"
-               [ngClass]="{'fretboard-finger_circle': note.fret > 0 }"
-               [ngStyle]="{'top': note.fret > 0 ? (note.fret * 18) + '%' : '-20px' }">
-            {{ note.finger }}
+        <div class="fretboard-stringContainer">
+          <div class="fretboard-string" *ngFor="let note of selectedChord.notes">
+            <div class="fretboard-finger"
+                [ngClass]="{'fretboard-finger_circle': note.fret > 0 }"
+                [ngStyle]="{'top': note.fret > 0 ? calcNoteHeight(note.fret) : '-24px' }">
+              {{ note.finger }}
+            </div>
           </div>
+        </div>
+        <div class="fretboard-fretContainer">
+          <div class="fretboard-fret"></div>
+          <div class="fretboard-fret"></div>
+          <div class="fretboard-fret">
+            <span class="fretboard-dot"></span>
+          </div>
+          <div class="fretboard-fret"></div>
+          <div class="fretboard-fret">
+            <span class="fretboard-dot"></span>
+          </div>
+          <div class="fretboard-fret"></div>
         </div>
       </div>
       {{ selectedChord.notes | json }}

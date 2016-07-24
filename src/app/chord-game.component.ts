@@ -15,6 +15,10 @@ export class ChordGameAppComponent {
   difficulties = Difficulties.toArray();
   selectedChord = {};
 
+  public calcNoteHeight(fret: number): string {
+    return `${(fret - 1) * 35 + 3}px`;
+  }
+
   constructor(private chordGameService: ChordGameService) {
     chordGameService.selected$.subscribe(x => {
       this.selectedChord = x;
