@@ -1,40 +1,31 @@
 .layoutContainer {
     display: flex;
-    height: 300px;
-    overflow: hidden;
-}
-
-.difficultyLabel {
-    margin-left: 0.5em;
-}
-
-.difficultySelect {
-    margin: 0.25em 0 1em 0;
-}
-
-.chordListContainer {
-    height: 200px;
-    width: 120px;
-    padding: 0.2em 0.5em;
-    display: flex;
     flex-direction: column;
-    overflow: auto;
-    border: 1px solid #f2f2f2;
-    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
-.rightContainer {
-    flex: 1;
+.btnContainer {
+    margin: 0 auto 1em;
+}
+
+.configurationRow {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.configurationRow-label {
+    margin-right: 0.5em;
+    font-weight: bold;
+}
+
+.fretboardContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-}
-
-.chordList-item {
-    display: block;
-    margin: 0.1em 0;
-    cursor: pointer;
 }
 
 .fretboard {

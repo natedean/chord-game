@@ -11,7 +11,7 @@ import { Difficulties } from './shared/chord-map';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChordGameAppComponent {
-  title = 'testing the game!';
+  title = 'Guitar Chord Game';
   difficulties = Difficulties.toArray();
   selectedChord = {};
 
