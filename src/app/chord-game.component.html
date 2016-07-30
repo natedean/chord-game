@@ -1,29 +1,33 @@
 <div class="chordGame">
-  <h3 class="center">
+  <h4 class="center">
     {{title}}
-  </h3>
+  </h4>
   <div class="layoutContainer">
+
     <div class="btnContainer">
-      <div class="btn">Practice</div>
-      <div class="btn">Play</div>
-      <div class="btn">Study</div>
+      <div class="btn" [ngClass]="{ 'btn-flat': pageState !== 'play' }" 
+           (click)="chordGameService.changePageState$.next('play')">
+        Play
+      </div>
+      <div class="btn" [ngClass]="{ 'btn-flat': pageState !== 'study' }"  
+          (click)="chordGameService.changePageState$.next('study')">
+        Study
+      </div>
     </div>
 
-      <div class="configurationRow">
-        <div class="configurationRow-label">Difficulty</div>
-        <select class="browser-default difficultySelect" #t 
-                (change)="chordGameService.selectCategory$.next(t.value)">
-          <option *ngFor="let difficulty of difficulties" [value]="difficulty">{{difficulty}}</option>
-        </select>
-      </div>
-
-
-      <div class="configurationRow">
-        <input type="text" placeholder="search">
+      <div class="configurationRow" *ngIf="pageState === 'study'">
         <select class="browser-default difficultySelect" #c
                 (change)="chordGameService.selectedChordReducer$.next(c.value)">
           <option *ngFor="let chord of chordGameService.chordList$ | async" [value]="chord.id">{{ chord.name }}</option>
         </select>
+        <a class="btn-floating btn waves-effect waves-light randomBtn"
+           (click)="chordGameService.selectRandomChordReducer$.next()">
+           <i class="material-icons" title="Get random chord">shuffle</i>
+        </a>
+      </div>
+
+      <div class="configurationRow" *ngIf="pageState === 'play'">
+        scoreboard
       </div>
 
       <div class="fretboardContainer">

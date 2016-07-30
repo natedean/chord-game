@@ -3,7 +3,7 @@
     flex-direction: column;
     overflow: hidden;
     position: relative;
-    max-width: 500px;
+    max-width: 350px;
     margin: 0 auto;
 }
 
@@ -13,6 +13,7 @@
 
 .configurationRow {
     display: flex;
+    height: 4em;
     align-items: center;
     margin-bottom: 1em;
 }
@@ -104,4 +105,13 @@
 
 .fretboard-fret:last-of-type {
     border: none;
+}
+
+.randomBtn {
+    display: flex;
+    margin-left: 0.75em;
+}
+
+.btn-active {
+    border: 1px solid #26a69a;
 }

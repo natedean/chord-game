@@ -14,14 +14,23 @@ export class ChordGameAppComponent {
   title = 'Guitar Chord Game';
   difficulties = Difficulties.toArray();
   selectedChord = {};
+  pageState: string;
 
   public calcNoteHeight(fret: number): string {
-    return `${(fret - 1) * 35 + 3}px`;
+    return `${(fret - 1) * 40 + 5}px`;
+  }
+
+  test(e) {
+    console.log(e.target.value)
   }
 
   constructor(private chordGameService: ChordGameService) {
     chordGameService.selected$.subscribe(x => {
       this.selectedChord = x;
+    });
+
+    chordGameService.pageState$.subscribe(x => {
+      this.pageState = x;
     });
 
   }
