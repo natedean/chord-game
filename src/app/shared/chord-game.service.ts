@@ -13,6 +13,7 @@ import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/switchMapTo';
 
 import { ChordMap, Chord } from  './chord-map';
 
@@ -40,6 +41,9 @@ export class ChordGameService {
 
       return state;
     });
+
+  public randomChordAfterAnswerReducer$ = this.answerHandler$
+      .map(() => this.randChordReducer);
        
   public pageState$ = this.changePageState$.startWith(PageStates.play);
 
@@ -48,13 +52,15 @@ export class ChordGameService {
     .map((x: string) => (state: Chord) => state = ChordMap.get(x));
 
   public selectRandomChordReducer$ = new Subject()
-    .map(() => state => {
+    .map(() => this.randChordReducer);
+
+  private randChordReducer = (state) => {
       const rand: number = Math.floor(Math.random() * ChordMap.size);
 
       console.log('rand: ', rand);
 
-      return ChordMapArray[rand]; 
-    });
+      return ChordMapArray[rand];
+  }
  
   public chordList$ = Observable.of(ChordMapArray);
 
@@ -69,7 +75,8 @@ export class ChordGameService {
   public selected$ = Observable.merge(
     this.selectedChordReducer$,
     this.chordListReducer$,
-    this.selectRandomChordReducer$
+    this.selectRandomChordReducer$,
+    this.randomChordAfterAnswerReducer$
   ).scan((acc: Chord, fn: any) => fn(acc), ChordMap.first())
   .do(x => console.log(x));
     

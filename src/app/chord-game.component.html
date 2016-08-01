@@ -28,8 +28,8 @@
             My Score
           </div>
           <div class="score">
-              <i class="material-icons tiny" 
-                 *ngFor="let isTruthy of gameState.myAnswers">{{ isTruthy ? 'grade' : 'thumb_down' }}
+              <i class="material-icons tiny" [ngClass]="{ 'green-text': isTruthy, 'red-text': !isTruthy }"
+                 *ngFor="let isTruthy of gameState.myAnswers">{{ isTruthy ? 'thumb_up' : 'thumb_down' }}
               </i>
           </div>
         </div>
