@@ -28,6 +28,9 @@
             My Score
           </div>
           <div class="score">
+              <i class="material-icons tiny" 
+                 *ngFor="let isTruthy of gameState.myAnswers">{{ isTruthy ? 'grade' : 'thumb_down' }}
+              </i>
           </div>
         </div>
         <div class="starContainer">
@@ -72,7 +75,9 @@
         </div><!--// fretboard -->
 
         <div class="configurationRow answerRow" *ngIf="pageState === 'play'">
-          <div class="btn answerBtn" *ngFor="let item of selectedChord.answers">
+          <div class="btn answerBtn" 
+               *ngFor="let item of helpersService.shuffle(selectedChord.answers)"
+               (click)="chordGameService.answerHandler$.next(item.isCorrect)">
             {{ item.answer }}
           </div>
         </div>

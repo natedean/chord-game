@@ -20,14 +20,27 @@ const PageStates = { play: 'play', study: 'study' };
 
 const ChordMapArray = ChordMap.toArray();
 
+const GameState = {
+  'myAnswers': [],
+  'opponentAnswers': [] 
+};
+
 @Injectable()
 export class ChordGameService {
 
   public whatever$ = new Subject();
 
-  public changePageState$ = new Subject<string>()
-     .do(x => console.log(`pageState: ${x}`));   
+  public changePageState$ = new Subject<string>();
 
+  public answerHandler$ = new Subject<boolean>();
+
+  private answerReducer$ = this.answerHandler$
+    .map(x => state => {
+      state.myAnswers.push(x);
+
+      return state;
+    });
+       
   public pageState$ = this.changePageState$.startWith(PageStates.play);
 
   public selectedChordReducer$ = new Subject()
@@ -47,6 +60,11 @@ export class ChordGameService {
 
   public chordListReducer$ = 
     this.chordList$.map(xs => state => state = xs[0]);
+
+  public gameState$ = Observable.merge(
+    this.answerReducer$
+  ).scan((acc, fn: any) => fn(acc), GameState)
+  .do(x => console.log(x));
 
   public selected$ = Observable.merge(
     this.selectedChordReducer$,
