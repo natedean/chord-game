@@ -11,6 +11,8 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/do';
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/takeUntil';
 
 import { ChordMap, Chord } from  './chord-map';
 
@@ -24,9 +26,9 @@ export class ChordGameService {
   public whatever$ = new Subject();
 
   public changePageState$ = new Subject<string>()
-     .do(x => console.log(`pageState: ${x}`));
+     .do(x => console.log(`pageState: ${x}`));   
 
-  public pageState$ = this.changePageState$.startWith(PageStates.play);   
+  public pageState$ = this.changePageState$.startWith(PageStates.play);
 
   public selectedChordReducer$ = new Subject()
     .do(x => console.dir(x))

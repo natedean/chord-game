@@ -4,11 +4,18 @@
     overflow: hidden;
     position: relative;
     max-width: 350px;
-    margin: 0 auto;
+    height: 100%;
+    margin: 1em auto 0;
 }
 
 .btnContainer {
-    margin: 0 auto 1em;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1em;
+}
+
+.btnContainer .btn:nth-of-type(2) {
+    margin-left: 0.5em;
 }
 
 .configurationRow {
@@ -16,6 +23,34 @@
     height: 4em;
     align-items: center;
     margin-bottom: 1em;
+}
+
+.scoreboardRow {
+    background: #f2f2f2;
+    padding: 0.5em;
+    justify-content: space-between;
+}
+
+.scoreContainer {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    text-align: center;
+}
+
+.scoreLabel {
+    border-bottom: 1px solid rgba(0,0,0,0.87);
+    flex: 1;
+}
+
+.score {
+    font-size: 1.2em;
+    flex: 1;
+}
+
+.difficultySelect {
+    margin-left: 0.5em;
+    font-size: 1.3em;
 }
 
 .configurationRow-label {
@@ -33,7 +68,8 @@
     position: relative;
     border: 1px solid rgba(0,0,0,0.87);
     height: 240px;
-    width: 200px;
+    width: 220px;
+    margin-bottom: 1em;
 }
 
 .fretboard-string {
@@ -109,9 +145,16 @@
 
 .randomBtn {
     display: flex;
-    margin-left: 0.75em;
+    margin: 0 0.5em;
 }
 
-.btn-active {
-    border: 1px solid #26a69a;
+.answerRow {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.answerBtn {
+    padding: 0 1em;
+    text-transform: none;
 }

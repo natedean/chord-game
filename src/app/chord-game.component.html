@@ -1,9 +1,5 @@
 <div class="chordGame">
-  <h4 class="center">
-    {{title}}
-  </h4>
   <div class="layoutContainer">
-
     <div class="btnContainer">
       <div class="btn" [ngClass]="{ 'btn-flat': pageState !== 'play' }" 
            (click)="chordGameService.changePageState$.next('play')">
@@ -26,12 +22,31 @@
         </a>
       </div>
 
-      <div class="configurationRow" *ngIf="pageState === 'play'">
-        scoreboard
+      <div class="configurationRow scoreboardRow" *ngIf="pageState === 'play'">
+        <div class="scoreContainer">
+          <div class="scoreLabel">
+            My Score
+          </div>
+          <div class="score">
+          </div>
+        </div>
+        <div class="starContainer">
+         
+        </div>
+        <div class="scoreContainer">
+          <div class="scoreLabel">
+            Opponent
+          </div>
+          <div class="score">
+            <i class="material-icons tiny">grade</i>
+          </div>
+        </div>
       </div>
 
       <div class="fretboardContainer">
-        <div class="selectedChordLabel">{{ selectedChord.name }}</div>
+        <div class="selectedChordLabel">
+          {{ pageState === 'study' ? selectedChord.name : '?' }}
+        </div>
         <div class="fretboard">
           <div class="fretboard-stringContainer">
             <div class="fretboard-string" *ngFor="let note of selectedChord.notes">
@@ -55,6 +70,13 @@
             <div class="fretboard-fret"></div>
           </div>
         </div><!--// fretboard -->
+
+        <div class="configurationRow answerRow" *ngIf="pageState === 'play'">
+          <div class="btn answerBtn" *ngFor="let item of selectedChord.answers">
+            {{ item.answer }}
+          </div>
+        </div>
+
     </div><!-- fretboardContainer -->
   </div><!--// layoutContainer -->
 </div><!--// chordGame -->

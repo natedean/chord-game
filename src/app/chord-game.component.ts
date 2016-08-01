@@ -1,13 +1,14 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ChordGameService } from './shared/chord-game.service';
 import { Difficulties } from './shared/chord-map';
+import { HelpersService } from './shared/helpers.service';
 
 @Component({
   moduleId: module.id,
   selector: 'chord-game-app',
   templateUrl: 'chord-game.component.html',
   styleUrls: ['chord-game.component.css'],
-  providers: [ChordGameService],
+  providers: [ChordGameService, HelpersService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChordGameAppComponent {
@@ -24,7 +25,8 @@ export class ChordGameAppComponent {
     console.log(e.target.value)
   }
 
-  constructor(private chordGameService: ChordGameService) {
+  constructor(private chordGameService: ChordGameService,
+              private helpersService: HelpersService) {
     chordGameService.selected$.subscribe(x => {
       this.selectedChord = x;
     });
