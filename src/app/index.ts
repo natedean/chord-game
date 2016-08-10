@@ -1,2 +1,2 @@
-export {environment} from './environment';
-export {ChordGameAppComponent} from './chord-game.component';
+export * from './environments/environment';
+export * from './chord-game.component';
