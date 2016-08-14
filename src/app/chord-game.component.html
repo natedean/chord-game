@@ -41,7 +41,9 @@
             Opponent
           </div>
           <div class="score">
-            <i class="material-icons tiny">grade</i>
+              <i class="material-icons tiny" [ngClass]="{ 'green-text': isTruthy, 'red-text': !isTruthy }"
+                 *ngFor="let isTruthy of gameState.opponentAnswers">{{ isTruthy ? 'thumb_up' : 'thumb_down' }}
+              </i>
           </div>
         </div>
       </div>

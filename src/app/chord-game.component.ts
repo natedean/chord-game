@@ -38,6 +38,9 @@ export class ChordGameAppComponent {
     });
 
     chordGameService.gameState$.subscribe(x => {
+      console.log('new gamestate', x);
+
+
       this.gameState = x;
     });
 

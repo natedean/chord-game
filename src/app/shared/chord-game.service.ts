@@ -14,12 +14,16 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/switchMapTo';
+import 'rxjs/add/observable/bindCallback';
 
 import { ChordMap, Chord } from  './chord-map';
 
 const PageStates = { play: 'play', study: 'study' };
 
 const ChordMapArray = ChordMap.toArray();
+
+// const socket = io.connect('https://gtsockets-zijlijoygm.now.sh');
+const socket = io.connect('localhost:3001');
 
 const GameState = {
   'myAnswers': [],
@@ -28,18 +32,33 @@ const GameState = {
 
 @Injectable()
 export class ChordGameService {
-
   public whatever$ = new Subject();
 
   public changePageState$ = new Subject<string>();
 
   public answerHandler$ = new Subject<boolean>();
 
+  private socketState$ = new Subject<any>();
+
+  private socketStateReducer$ = this.socketState$
+    .map(x => state => {
+      state = x;
+
+      console.log('server state changed!', x);
+
+      return state;
+    });
+
   private answerReducer$ = this.answerHandler$
     .map(x => state => {
       state.myAnswers.push(x);
 
       return state;
+    })
+    .do(x => {
+      // not sure how to handle this side effect at the moment
+      socket.emit('answerEvent', { isCorrect: true });
+
     });
 
   public randomChordAfterAnswerReducer$ = this.answerHandler$
@@ -57,8 +76,6 @@ export class ChordGameService {
   private randChordReducer = (state) => {
       const rand: number = Math.floor(Math.random() * ChordMap.size);
 
-      console.log('rand: ', rand);
-
       return ChordMapArray[rand];
   }
  
@@ -68,18 +85,26 @@ export class ChordGameService {
     this.chordList$.map(xs => state => state = xs[0]);
 
   public gameState$ = Observable.merge(
-    this.answerReducer$
-  ).scan((acc, fn: any) => fn(acc), GameState)
-  .do(x => console.log(x));
+    this.answerReducer$,
+    this.socketStateReducer$
+  ).scan((acc, fn: any) => fn(acc), GameState);
 
   public selected$ = Observable.merge(
     this.selectedChordReducer$,
     this.chordListReducer$,
     this.selectRandomChordReducer$,
     this.randomChordAfterAnswerReducer$
-  ).scan((acc: Chord, fn: any) => fn(acc), ChordMap.first())
-  .do(x => console.log(x));
-    
-  constructor() {}
+  ).scan((acc: Chord, fn: any) => fn(acc), ChordMap.first());
+
+
+  constructor() {
+    // testing
+
+    socket.on('stateChange', (x) => {
+      this.socketState$.next(x);
+    });
+
+
+  }
 
 }
