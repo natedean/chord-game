@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ChordGameService } from './shared/chord-game.service';
 import { Difficulties } from './shared/chord-map';
 import { HelpersService } from './shared/helpers.service';
@@ -27,7 +27,8 @@ export class ChordGameAppComponent {
   }
 
   constructor(private chordGameService: ChordGameService,
-              private helpersService: HelpersService) {
+              private helpersService: HelpersService,
+              private ref: ChangeDetectorRef) {
 
     chordGameService.selected$.subscribe(x => {
       this.selectedChord = x;
@@ -38,10 +39,12 @@ export class ChordGameAppComponent {
     });
 
     chordGameService.gameState$.subscribe(x => {
-      console.log('new gamestate', x);
-
-
       this.gameState = x;
+
+      console.log('forcing detect changes');
+
+      // need to force detect changes here...
+      this.ref.detectChanges();
     });
 
   }

@@ -25,10 +25,7 @@ const ChordMapArray = ChordMap.toArray();
 // const socket = io.connect('https://gtsockets-zijlijoygm.now.sh');
 const socket = io.connect('localhost:3001');
 
-const GameState = {
-  'myAnswers': [],
-  'opponentAnswers': [] 
-};
+const GameState = {};
 
 @Injectable()
 export class ChordGameService {
@@ -51,7 +48,7 @@ export class ChordGameService {
 
   private answerReducer$ = this.answerHandler$
     .map(x => state => {
-      state.myAnswers.push(x);
+      state.me.answers.push(x);
 
       return state;
     })

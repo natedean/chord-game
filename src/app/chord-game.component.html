@@ -22,14 +22,16 @@
         </a>
       </div>
 
-      <div class="configurationRow scoreboardRow" *ngIf="pageState === 'play'">
+      <div class="configurationRow scoreboardRow" 
+           *ngIf="pageState === 'play' && gameState.isInProgress">
         <div class="scoreContainer">
           <div class="scoreLabel">
             My Score
           </div>
           <div class="score">
               <i class="material-icons tiny" [ngClass]="{ 'green-text': isTruthy, 'red-text': !isTruthy }"
-                 *ngFor="let isTruthy of gameState.myAnswers">{{ isTruthy ? 'thumb_up' : 'thumb_down' }}
+                 *ngFor="let isTruthy of gameState.me.answers">
+                 {{ isTruthy ? 'thumb_up' : 'thumb_down' }}
               </i>
           </div>
         </div>
@@ -42,10 +44,27 @@
           </div>
           <div class="score">
               <i class="material-icons tiny" [ngClass]="{ 'green-text': isTruthy, 'red-text': !isTruthy }"
-                 *ngFor="let isTruthy of gameState.opponentAnswers">{{ isTruthy ? 'thumb_up' : 'thumb_down' }}
+                 *ngFor="let isTruthy of gameState.opponent.answers">
+                 {{ isTruthy ? 'thumb_up' : 'thumb_down' }}
               </i>
           </div>
         </div>
+      </div>
+
+      <div class="configurationRow"
+        *ngIf="!gameState.isInProgress">
+          <div>Finding opponent...</div>
+          <div class="preloader-wrapper small active">
+            <div class="spinner-layer spinner-green-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
       </div>
 
       <div class="fretboardContainer">
