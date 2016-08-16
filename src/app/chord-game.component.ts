@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ChordGameService } from './shared/chord-game.service';
 import { Difficulties } from './shared/chord-map';
 import { HelpersService } from './shared/helpers.service';
+import * as Immutable from 'immutable';
 
 @Component({
   moduleId: module.id,
@@ -16,7 +17,7 @@ export class ChordGameAppComponent {
   difficulties = Difficulties.toArray();
   selectedChord = {};
   pageState: string;
-  gameState = {};
+  gameState = Immutable.Map();
 
   public calcNoteHeight(fret: number): string {
     return `${(fret - 1) * 40 + 5}px`;
@@ -27,8 +28,7 @@ export class ChordGameAppComponent {
   }
 
   constructor(private chordGameService: ChordGameService,
-              private helpersService: HelpersService,
-              private ref: ChangeDetectorRef) {
+              private helpersService: HelpersService) {
 
     chordGameService.selected$.subscribe(x => {
       this.selectedChord = x;
@@ -39,12 +39,9 @@ export class ChordGameAppComponent {
     });
 
     chordGameService.gameState$.subscribe(x => {
-      this.gameState = x;
+        this.gameState = x;
 
-      console.log('forcing detect changes');
-
-      // need to force detect changes here...
-      this.ref.detectChanges();
+        console.dir(this.gameState.toJS());
     });
 
   }

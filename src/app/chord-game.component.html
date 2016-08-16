@@ -23,14 +23,14 @@
       </div>
 
       <div class="configurationRow scoreboardRow" 
-           *ngIf="pageState === 'play' && gameState.isInProgress">
+           *ngIf="pageState === 'play' && gameState.get('isInProgress')">
         <div class="scoreContainer">
           <div class="scoreLabel">
             My Score
           </div>
           <div class="score">
               <i class="material-icons tiny" [ngClass]="{ 'green-text': isTruthy, 'red-text': !isTruthy }"
-                 *ngFor="let isTruthy of gameState.me.answers">
+                 *ngFor="let isTruthy of gameState.getIn(['me','answers'])">
                  {{ isTruthy ? 'thumb_up' : 'thumb_down' }}
               </i>
           </div>
@@ -44,7 +44,7 @@
           </div>
           <div class="score">
               <i class="material-icons tiny" [ngClass]="{ 'green-text': isTruthy, 'red-text': !isTruthy }"
-                 *ngFor="let isTruthy of gameState.opponent.answers">
+                 *ngFor="let isTruthy of gameState.getIn(['opponent','answers'])">
                  {{ isTruthy ? 'thumb_up' : 'thumb_down' }}
               </i>
           </div>
@@ -52,7 +52,7 @@
       </div>
 
       <div class="configurationRow"
-        *ngIf="!gameState.isInProgress">
+        *ngIf="!gameState.get('isInProgress')">
           <div>Finding opponent...</div>
           <div class="preloader-wrapper small active">
             <div class="spinner-layer spinner-green-only">
@@ -102,7 +102,6 @@
             {{ item.answer }}
           </div>
         </div>
-
     </div><!-- fretboardContainer -->
   </div><!--// layoutContainer -->
 </div><!--// chordGame -->

@@ -25,8 +25,6 @@ const ChordMapArray = ChordMap.toArray();
 // const socket = io.connect('https://gtsockets-zijlijoygm.now.sh');
 const socket = io.connect('localhost:3001');
 
-const GameState = {};
-
 @Injectable()
 export class ChordGameService {
   public whatever$ = new Subject();
@@ -39,23 +37,33 @@ export class ChordGameService {
 
   private socketStateReducer$ = this.socketState$
     .map(x => state => {
-      state = x;
 
-      console.log('server state changed!', x);
+      state = state.merge(x);
+
+      console.log('myAnswers', state.getIn(['me','answers']).toJS());
+
+      if (state.getIn(['opponent','answers'])) {
+        console.log('opponentAnswers', state.getIn(['opponent','answers']).toJS());
+      }
 
       return state;
     });
 
   private answerReducer$ = this.answerHandler$
     .map(x => state => {
-      state.me.answers.push(x);
+
+      let list = state.getIn(['me', 'answers']);
+      list = list.push(x);
+
+      state = state.setIn(['me', 'answers'], list);
+
+      console.log('you answered!', state);
+
+      // ergg, horrible side effect here
+      socket.emit('answerEvent', { isCorrect: state.getIn(['me', 'answers']).last() });
+      // end horribleness
 
       return state;
-    })
-    .do(x => {
-      // not sure how to handle this side effect at the moment
-      socket.emit('answerEvent', { isCorrect: true });
-
     });
 
   public randomChordAfterAnswerReducer$ = this.answerHandler$
@@ -84,7 +92,7 @@ export class ChordGameService {
   public gameState$ = Observable.merge(
     this.answerReducer$,
     this.socketStateReducer$
-  ).scan((acc, fn: any) => fn(acc), GameState);
+  ).scan((acc, fn: any) => fn(acc), Immutable.Map());
 
   public selected$ = Observable.merge(
     this.selectedChordReducer$,
