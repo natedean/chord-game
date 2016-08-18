@@ -18,7 +18,7 @@ import 'rxjs/add/observable/bindCallback';
 
 import { ChordMap, Chord } from  './chord-map';
 
-const PageStates = { play: 'play', study: 'study' };
+const PageStates = { play: 'play', study: 'study', choose: 'choose' };
 
 const ChordMapArray = ChordMap.toArray();
 
@@ -27,8 +27,6 @@ const socket = io.connect('localhost:3001');
 
 @Injectable()
 export class ChordGameService {
-  public whatever$ = new Subject();
-
   public changePageState$ = new Subject<string>();
 
   public answerHandler$ = new Subject<boolean>();
@@ -39,12 +37,6 @@ export class ChordGameService {
     .map(x => state => {
 
       state = state.merge(x);
-
-      console.log('myAnswers', state.getIn(['me','answers']).toJS());
-
-      if (state.getIn(['opponent','answers'])) {
-        console.log('opponentAnswers', state.getIn(['opponent','answers']).toJS());
-      }
 
       return state;
     });
@@ -57,8 +49,6 @@ export class ChordGameService {
 
       state = state.setIn(['me', 'answers'], list);
 
-      console.log('you answered!', state);
-
       // ergg, horrible side effect here
       socket.emit('answerEvent', { isCorrect: state.getIn(['me', 'answers']).last() });
       // end horribleness
@@ -68,8 +58,8 @@ export class ChordGameService {
 
   public randomChordAfterAnswerReducer$ = this.answerHandler$
       .map(() => this.randChordReducer);
-       
-  public pageState$ = this.changePageState$.startWith(PageStates.play);
+
+  public pageState$ = this.changePageState$.startWith(PageStates.choose);
 
   public selectedChordReducer$ = new Subject()
     .do(x => console.dir(x))
@@ -82,11 +72,11 @@ export class ChordGameService {
       const rand: number = Math.floor(Math.random() * ChordMap.size);
 
       return ChordMapArray[rand];
-  }
- 
+  };
+
   public chordList$ = Observable.of(ChordMapArray);
 
-  public chordListReducer$ = 
+  public chordListReducer$ =
     this.chordList$.map(xs => state => state = xs[0]);
 
   public gameState$ = Observable.merge(
@@ -105,6 +95,7 @@ export class ChordGameService {
   constructor() {
     // testing
 
+    // incoming socket stage changes // couldn't get fromCallback to work...
     socket.on('stateChange', (x) => {
       this.socketState$.next(x);
     });

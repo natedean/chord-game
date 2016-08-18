@@ -1,108 +1,114 @@
 <div class="chordGame">
   <div class="layoutContainer">
-    <div class="btnContainer">
-      <div class="btn" [ngClass]="{ 'btn-flat': pageState !== 'play' }"
+
+    <div class="btnContainer" *ngIf="pageState !== 'play'">
+      <div class="btn"
            (click)="chordGameService.changePageState$.next('play')">
         Play
       </div>
-      <div class="btn" [ngClass]="{ 'btn-flat': pageState !== 'study' }"
-          (click)="chordGameService.changePageState$.next('study')">
+      <div class="btn" [ngClass]="{ 'btn-flat': pageState === 'study' }"
+           (click)="chordGameService.changePageState$.next('study')">
         Study
       </div>
     </div>
 
-      <div class="configurationRow" *ngIf="pageState === 'study'">
-        <select class="browser-default difficultySelect" #c [value]="selectedChord.id"
-                (change)="chordGameService.selectedChordReducer$.next(c.value)">
-          <option *ngFor="let chord of chordGameService.chordList$ | async" [value]="chord.id">{{ chord.name }}</option>
-        </select>
-        <a class="btn-floating btn waves-effect waves-light randomBtn"
-           (click)="chordGameService.selectRandomChordReducer$.next()">
-           <i class="material-icons" title="Get random chord">shuffle</i>
-        </a>
-      </div>
+    <div class="configurationRow" *ngIf="pageState === 'study'">
+      <select class="browser-default difficultySelect" #c [value]="selectedChord.id"
+              (change)="chordGameService.selectedChordReducer$.next(c.value)">
+        <option *ngFor="let chord of chordGameService.chordList$ | async" [value]="chord.id">{{ chord.name }}</option>
+      </select>
+      <a class="btn-floating btn waves-effect waves-light randomBtn"
+         (click)="chordGameService.selectRandomChordReducer$.next()">
+        <i class="material-icons" title="Get random chord">shuffle</i>
+      </a>
+    </div>
 
-      <div class="configurationRow scoreboardRow"
-           *ngIf="pageState === 'play' && gameState.get('isInProgress')">
-        <div class="scoreContainer">
-          <div class="scoreLabel">
-            {{ gameState.getIn(['me', 'name']) }}
-          </div>
-          <div class="score">
-              <i class="material-icons tiny" [ngClass]="{ 'green-text': isTruthy, 'red-text': !isTruthy }"
-                 *ngFor="let isTruthy of gameState.getIn(['me','answers'])">
-                 {{ isTruthy ? 'thumb_up' : 'thumb_down' }}
-              </i>
-          </div>
-        </div>
-        <div class="starContainer">
-
-        </div>
-        <div class="scoreContainer">
-          <div class="scoreLabel">
-            {{ gameState.getIn(['opponent', 'name'])}}
-          </div>
-          <div class="score">
-              <i class="material-icons tiny" [ngClass]="{ 'green-text': isTruthy, 'red-text': !isTruthy }"
-                 *ngFor="let isTruthy of gameState.getIn(['opponent','answers'])">
-                 {{ isTruthy ? 'thumb_up' : 'thumb_down' }}
-              </i>
-          </div>
-        </div>
-      </div>
-
+    <div class="configurationRow scoreboardRow"
+         *ngIf="pageState === 'play' && !gameState.get('isInProgress')">
       <div class="configurationRow"
-        *ngIf="!gameState.get('isInProgress')">
-          <div>Finding opponent...</div>
-          <div class="preloader-wrapper small active">
-            <div class="spinner-layer spinner-green-only">
-              <div class="circle-clipper left">
-                <div class="circle"></div>
-              </div><div class="gap-patch">
-                <div class="circle"></div>
-              </div><div class="circle-clipper right">
-                <div class="circle"></div>
-              </div>
-            </div>
+           *ngIf="!gameState.get('isInProgress')">
+        <div>Finding opponent...</div>
+        <div class="preloader-wrapper small active">
+          <div class="spinner-layer spinner-green-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+            <div class="circle"></div>
+          </div><div class="circle-clipper right">
+            <div class="circle"></div>
           </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="configurationRow scoreboardRow"
+         *ngIf="pageState === 'play' && gameState.get('isInProgress')">
+      <div class="scoreContainer">
+        <div class="scoreLabel">
+          {{ gameState.getIn(['me', 'name']) }}
+        </div>
+        <div class="score">
+          <i class="material-icons tiny" [ngClass]="{ 'green-text': isTruthy, 'red-text': !isTruthy }"
+             *ngFor="let isTruthy of gameState.getIn(['me','answers'])">
+            {{ isTruthy ? 'thumb_up' : 'thumb_down' }}
+          </i>
+        </div>
+      </div>
+      <div class="starContainer">
+
       </div>
 
-      <div class="fretboardContainer">
-        <div class="selectedChordLabel">
-          {{ pageState === 'study' ? selectedChord.name : '?' }}
+      <div class="scoreContainer">
+        <div class="scoreLabel">
+          {{ gameState.getIn(['opponent', 'name'])}}
         </div>
-        <div class="fretboard">
-          <div class="fretboard-stringContainer">
-            <div class="fretboard-string" *ngFor="let note of selectedChord.notes">
-              <div class="fretboard-finger"
-                  [ngClass]="{'fretboard-finger_circle': note.fret > 0 }"
-                  [ngStyle]="{'top': note.fret > 0 ? calcNoteHeight(note.fret) : '-24px' }">
-                {{ note.finger }}
-              </div>
-            </div>
-          </div>
-          <div class="fretboard-fretContainer">
-            <div class="fretboard-fret"></div>
-            <div class="fretboard-fret"></div>
-            <div class="fretboard-fret">
-              <span class="fretboard-dot"></span>
-            </div>
-            <div class="fretboard-fret"></div>
-            <div class="fretboard-fret">
-              <span class="fretboard-dot"></span>
-            </div>
-            <div class="fretboard-fret"></div>
-          </div>
-        </div><!--// fretboard -->
+        <div class="score">
+          <i class="material-icons tiny" [ngClass]="{ 'green-text': isTruthy, 'red-text': !isTruthy }"
+             *ngFor="let isTruthy of gameState.getIn(['opponent','answers'])">
+            {{ isTruthy ? 'thumb_up' : 'thumb_down' }}
+          </i>
+        </div>
+      </div>
+    </div>
 
-        <div class="configurationRow answerRow" *ngIf="pageState === 'play'">
-          <div class="btn answerBtn"
-               *ngFor="let item of helpersService.shuffle(selectedChord.answers)"
-               (click)="chordGameService.answerHandler$.next(item.isCorrect)">
-            {{ item.answer }}
+    <div class="fretboardContainer" *ngIf="pageState !== 'choose'">
+      <div class="selectedChordLabel">
+        {{ pageState === 'study' ? selectedChord.name : '?' }}
+      </div>
+      <div class="fretboard">
+        <div class="fretboard-stringContainer">
+          <div class="fretboard-string" *ngFor="let note of selectedChord.notes">
+            <div class="fretboard-finger"
+                 [ngClass]="{'fretboard-finger_circle': note.fret > 0 }"
+                 [ngStyle]="{'top': note.fret > 0 ? calcNoteHeight(note.fret) : '-24px' }">
+              {{ note.finger }}
+            </div>
           </div>
         </div>
+        <div class="fretboard-fretContainer">
+          <div class="fretboard-fret"></div>
+          <div class="fretboard-fret"></div>
+          <div class="fretboard-fret">
+            <span class="fretboard-dot"></span>
+          </div>
+          <div class="fretboard-fret"></div>
+          <div class="fretboard-fret">
+            <span class="fretboard-dot"></span>
+          </div>
+          <div class="fretboard-fret"></div>
+        </div>
+      </div><!--// fretboard -->
+
+      <div class="configurationRow answerRow" *ngIf="pageState === 'play'">
+        <div class="btn answerBtn"
+             *ngFor="let item of helpersService.shuffle(selectedChord.answers)"
+             (click)="chordGameService.answerHandler$.next(item.isCorrect)">
+          {{ item.answer }}
+        </div>
+      </div>
     </div><!-- fretboardContainer -->
+
   </div><!--// layoutContainer -->
 </div><!--// chordGame -->
 
