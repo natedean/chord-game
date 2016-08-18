@@ -1,6 +1,5 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { ChordGameService } from './shared/chord-game.service';
-import { Difficulties } from './shared/chord-map';
 import { HelpersService } from './shared/helpers.service';
 import * as Immutable from 'immutable';
 
@@ -9,12 +8,10 @@ import * as Immutable from 'immutable';
   selector: 'chord-game-app',
   templateUrl: 'chord-game.component.html',
   styleUrls: ['chord-game.component.css'],
-  providers: [ChordGameService, HelpersService],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  providers: [ChordGameService, HelpersService]
 })
 export class ChordGameAppComponent {
   title = 'Guitar Chord Game';
-  difficulties = Difficulties.toArray();
   selectedChord = {};
   pageState: string;
   gameState = Immutable.Map();
@@ -23,12 +20,9 @@ export class ChordGameAppComponent {
     return `${(fret - 1) * 40 + 5}px`;
   }
 
-  test(e) {
-    console.log(e.target.value)
-  }
-
   constructor(private chordGameService: ChordGameService,
-              private helpersService: HelpersService) {
+              private helpersService: HelpersService,
+              private zone: NgZone) {
 
     chordGameService.selected$.subscribe(x => {
       this.selectedChord = x;
@@ -39,9 +33,12 @@ export class ChordGameAppComponent {
     });
 
     chordGameService.gameState$.subscribe(x => {
-        this.gameState = x;
+        this.zone.run(() => {
+          this.gameState = x;
 
-        console.dir(this.gameState.toJS());
+          console.log('state');
+          console.dir(this.gameState.toJS());
+        });
     });
 
   }

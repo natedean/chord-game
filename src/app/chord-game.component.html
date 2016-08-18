@@ -1,11 +1,11 @@
 <div class="chordGame">
   <div class="layoutContainer">
     <div class="btnContainer">
-      <div class="btn" [ngClass]="{ 'btn-flat': pageState !== 'play' }" 
+      <div class="btn" [ngClass]="{ 'btn-flat': pageState !== 'play' }"
            (click)="chordGameService.changePageState$.next('play')">
         Play
       </div>
-      <div class="btn" [ngClass]="{ 'btn-flat': pageState !== 'study' }"  
+      <div class="btn" [ngClass]="{ 'btn-flat': pageState !== 'study' }"
           (click)="chordGameService.changePageState$.next('study')">
         Study
       </div>
@@ -22,11 +22,11 @@
         </a>
       </div>
 
-      <div class="configurationRow scoreboardRow" 
+      <div class="configurationRow scoreboardRow"
            *ngIf="pageState === 'play' && gameState.get('isInProgress')">
         <div class="scoreContainer">
           <div class="scoreLabel">
-            My Score
+            {{ gameState.getIn(['me', 'name']) }}
           </div>
           <div class="score">
               <i class="material-icons tiny" [ngClass]="{ 'green-text': isTruthy, 'red-text': !isTruthy }"
@@ -36,11 +36,11 @@
           </div>
         </div>
         <div class="starContainer">
-         
+
         </div>
         <div class="scoreContainer">
           <div class="scoreLabel">
-            Opponent
+            {{ gameState.getIn(['opponent', 'name'])}}
           </div>
           <div class="score">
               <i class="material-icons tiny" [ngClass]="{ 'green-text': isTruthy, 'red-text': !isTruthy }"
@@ -96,7 +96,7 @@
         </div><!--// fretboard -->
 
         <div class="configurationRow answerRow" *ngIf="pageState === 'play'">
-          <div class="btn answerBtn" 
+          <div class="btn answerBtn"
                *ngFor="let item of helpersService.shuffle(selectedChord.answers)"
                (click)="chordGameService.answerHandler$.next(item.isCorrect)">
             {{ item.answer }}
