@@ -1,6 +1,5 @@
 import { Component, NgZone } from '@angular/core';
 import { ChordGameService } from './shared/chord-game.service';
-import { HelpersService } from './shared/helpers.service';
 import * as Immutable from 'immutable';
 
 @Component({
@@ -8,7 +7,7 @@ import * as Immutable from 'immutable';
   selector: 'chord-game-app',
   templateUrl: 'chord-game.component.html',
   styleUrls: ['chord-game.component.css'],
-  providers: [ChordGameService, HelpersService]
+  providers: [ChordGameService]
 })
 export class ChordGameAppComponent {
   title = 'Guitar Chord Game';
@@ -21,7 +20,6 @@ export class ChordGameAppComponent {
   }
 
   constructor(private chordGameService: ChordGameService,
-              private helpersService: HelpersService,
               private zone: NgZone) {
 
     chordGameService.selected$.subscribe(x => {

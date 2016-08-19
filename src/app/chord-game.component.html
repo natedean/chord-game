@@ -102,7 +102,7 @@
 
       <div class="configurationRow answerRow" *ngIf="pageState === 'play'">
         <div class="btn answerBtn"
-             *ngFor="let item of helpersService.shuffle(selectedChord.answers)"
+             *ngFor="let item of selectedChord.answers"
              (click)="chordGameService.answerHandler$.next(item.isCorrect)">
           {{ item.answer }}
         </div>

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import * as Immutable from 'immutable';
+import { shuffle } from './helpers';
 
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -71,6 +72,10 @@ export class ChordGameService {
   private randChordReducer = (state) => {
       const rand: number = Math.floor(Math.random() * ChordMap.size);
 
+      let result: Chord = ChordMapArray[rand];
+
+      result.answers = shuffle(result.answers);
+
       return ChordMapArray[rand];
   };
 
@@ -100,7 +105,11 @@ export class ChordGameService {
       this.socketState$.next(x);
     });
 
-
+    this.pageState$.subscribe((x) => {
+      if (x === PageStates.play) {
+        socket.emit('join');
+      }
+    });
   }
 
 }
