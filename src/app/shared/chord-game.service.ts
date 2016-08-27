@@ -17,11 +17,7 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/switchMapTo';
 import 'rxjs/add/observable/bindCallback';
 
-import { ChordMap, Chord } from  './chord-map';
-
 const PageStates = { play: 'play', study: 'study', choose: 'choose' };
-
-const ChordMapArray = ChordMap.toArray();
 
 // const socket = io.connect('https://gtsockets-zijlijoygm.now.sh');
 const socket = io.connect('localhost:3001');
@@ -57,45 +53,12 @@ export class ChordGameService {
       return state;
     });
 
-  public randomChordAfterAnswerReducer$ = this.answerHandler$
-      .map(() => this.randChordReducer);
-
   public pageState$ = this.changePageState$.startWith(PageStates.choose);
-
-  public selectedChordReducer$ = new Subject()
-    .do(x => console.dir(x))
-    .map((x: string) => (state: Chord) => state = ChordMap.get(x));
-
-  public selectRandomChordReducer$ = new Subject()
-    .map(() => this.randChordReducer);
-
-  private randChordReducer = (state) => {
-      const rand: number = Math.floor(Math.random() * ChordMap.size);
-
-      let result: Chord = ChordMapArray[rand];
-
-      result.answers = shuffle(result.answers);
-
-      return ChordMapArray[rand];
-  };
-
-  public chordList$ = Observable.of(ChordMapArray);
-
-  public chordListReducer$ =
-    this.chordList$.map(xs => state => state = xs[0]);
 
   public gameState$ = Observable.merge(
     this.answerReducer$,
     this.socketStateReducer$
   ).scan((acc, fn: any) => fn(acc), Immutable.Map());
-
-  public selected$ = Observable.merge(
-    this.selectedChordReducer$,
-    this.chordListReducer$,
-    this.selectRandomChordReducer$,
-    this.randomChordAfterAnswerReducer$
-  ).scan((acc: Chord, fn: any) => fn(acc), ChordMap.first());
-
 
   constructor() {
     // testing

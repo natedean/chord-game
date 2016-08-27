@@ -1,0 +1,10 @@
+<div class="configurationRow">
+  <select class="browser-default difficultySelect" #c [value]="selectedChord.id"
+          (change)="chordGameService.selectedChordReducer$.next(c.value)">
+    <option *ngFor="let chord of chordGameService.chordList$ | async" [value]="chord.id">{{ chord.name }}</option>
+  </select>
+  <a class="btn-floating btn waves-effect waves-light randomBtn"
+     (click)="chordGameService.selectRandomChordReducer$.next()">
+    <i class="material-icons" title="Get random chord">shuffle</i>
+  </a>
+</div>

@@ -1,5 +1,6 @@
 import { Component, NgZone } from '@angular/core';
 import { ChordGameService } from './shared/chord-game.service';
+import { FretboardComponent } from './fretboard/fretboard.component';
 import * as Immutable from 'immutable';
 
 @Component({
@@ -7,24 +8,16 @@ import * as Immutable from 'immutable';
   selector: 'chord-game-app',
   templateUrl: 'chord-game.component.html',
   styleUrls: ['chord-game.component.css'],
+  directives: [FretboardComponent],
   providers: [ChordGameService]
 })
 export class ChordGameAppComponent {
   title = 'Guitar Chord Game';
-  selectedChord = {};
   pageState: string;
   gameState = Immutable.Map();
 
-  public calcNoteHeight(fret: number): string {
-    return `${(fret - 1) * 40 + 5}px`;
-  }
-
   constructor(private chordGameService: ChordGameService,
               private zone: NgZone) {
-
-    chordGameService.selected$.subscribe(x => {
-      this.selectedChord = x;
-    });
 
     chordGameService.pageState$.subscribe(x => {
       this.pageState = x;

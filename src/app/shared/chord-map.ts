@@ -1,20 +1,10 @@
 import * as Immutable from 'immutable';
 
 export const Difficulties = Immutable.Map({
-    easy: 'easy', 
+    easy: 'easy',
     medium: 'medium',
     hard: 'hard'
 });
-
-export interface Chord {
-    id: string;
-    name: string;
-    difficulty: string;
-    notes: any;
-    answers: any;
-    scaleTones?: any;
-    noteLetters?: any;
-}
 
 export const ChordMap = Immutable.OrderedMap({
     '1': {id: '1', name: "C Major", difficulty: "easy", notes: [{fret: -1, finger: "x"},{fret: 3, finger: 3},{fret: 2,finger: 2},{fret: 0, finger: 0},{fret: 1, finger: 1},{fret: 0, finger: 0}],

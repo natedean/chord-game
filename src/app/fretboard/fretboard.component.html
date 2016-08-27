@@ -1,0 +1,23 @@
+<div class="fretboard">
+  <div class="fretboard-stringContainer">
+    <div class="fretboard-string" *ngFor="let note of chord.get('notes')">
+      <div class="fretboard-finger"
+           [ngClass]="{'fretboard-finger_circle': note.get('fret') > 0 }"
+           [ngStyle]="{'top': note.get('fret') > 0 ? calcNoteHeight(note.get('fret')) : '-24px' }">
+        {{ note.get('finger') }}
+      </div>
+    </div>
+  </div>
+  <div class="fretboard-fretContainer">
+    <div class="fretboard-fret"></div>
+    <div class="fretboard-fret"></div>
+    <div class="fretboard-fret">
+      <span class="fretboard-dot"></span>
+    </div>
+    <div class="fretboard-fret"></div>
+    <div class="fretboard-fret">
+      <span class="fretboard-dot"></span>
+    </div>
+    <div class="fretboard-fret"></div>
+  </div>
+</div><!--// fretboard -->
