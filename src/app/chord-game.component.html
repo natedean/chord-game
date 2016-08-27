@@ -43,9 +43,7 @@
             {{ isTruthy ? 'thumb_up' : 'thumb_down' }}
           </i>
         </div>
-      </div>
-      <div class="starContainer">
-        {{ gameState.get('timer') }}
+        <div class="scoreContainer-message">{{ gameState.getIn(['me', 'message']) }}</div>
       </div>
 
       <div class="scoreContainer">
@@ -58,6 +56,7 @@
             {{ isTruthy ? 'thumb_up' : 'thumb_down' }}
           </i>
         </div>
+        <div class="scoreContainer-message">{{ gameState.getIn(['opponent', 'message']) }}</div>
       </div>
     </div>
 
