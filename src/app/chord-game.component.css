@@ -20,6 +20,7 @@
 
 .configurationRow {
     display: flex;
+    position: relative;
     height: 4em;
     align-items: center;
     margin-bottom: 1em;
@@ -38,14 +39,29 @@
     text-align: center;
 }
 
-.scoreLabel {
-    border-bottom: 1px solid rgba(0,0,0,0.87);
-    flex: 1;
+.scoreContainer-message {
+  position: absolute;
+  top: 4em;
 }
 
-.score {
+.scoreContainer-message_left {
+  left: 0.4em;
+}
+
+.scoreContainer-message_right {
+  right: 0.4em;
+}
+
+.scoreContainer-scoreLabel {
+    border-bottom: 1px solid rgba(0,0,0,0.87);
+    flex: 1;
+    height: 50%;
+}
+
+.scoreContainer-score {
     font-size: 1.2em;
     flex: 1;
+    height: 50%;
 }
 
 .difficultySelect {
@@ -88,4 +104,13 @@
 .answerBtn {
     padding: 0 1em;
     text-transform: none;
+}
+
+.answerBtn.disabled {
+  pointer-events: none;
+}
+
+.answerBtn_correct {
+  background-color: #4CAF50 !important;
+  color: white !important;
 }

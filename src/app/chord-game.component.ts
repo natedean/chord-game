@@ -31,7 +31,14 @@ export class ChordGameAppComponent {
           console.dir(this.gameState.toJS());
         });
     });
+  }
 
+  private isPlayable = (message) => {
+    message = message.toLowerCase();
+
+    if (!message) { return true; }
+
+    return message.includes('waiting');
   }
 
 }

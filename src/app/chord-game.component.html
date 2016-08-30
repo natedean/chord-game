@@ -14,61 +14,70 @@
 
     <div class="configurationRow scoreboardRow"
          *ngIf="pageState === 'play' && !gameState.get('isInProgress')">
-      <div class="configurationRow"
-           *ngIf="!gameState.get('isInProgress')">
         <div>Finding opponent...</div>
-        <div class="preloader-wrapper small active">
-          <div class="spinner-layer spinner-green-only">
-            <div class="circle-clipper left">
-              <div class="circle"></div>
-            </div><div class="gap-patch">
-            <div class="circle"></div>
-          </div><div class="circle-clipper right">
-            <div class="circle"></div>
-          </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="configurationRow scoreboardRow"
          *ngIf="pageState === 'play' && gameState.get('isInProgress')">
       <div class="scoreContainer">
-        <div class="scoreLabel">
+        <div class="scoreContainer-scoreLabel">
           {{ gameState.getIn(['me', 'name']) }}
         </div>
-        <div class="score">
+        <div class="scoreContainer-score">
           <i class="material-icons tiny" [ngClass]="{ 'green-text': isTruthy, 'red-text': !isTruthy }"
              *ngFor="let isTruthy of gameState.getIn(['me','answers'])">
             {{ isTruthy ? 'thumb_up' : 'thumb_down' }}
           </i>
         </div>
-        <div class="scoreContainer-message">{{ gameState.getIn(['me', 'message']) }}</div>
+      </div>
+
+      <div class="preloader-wrapper small active" *ngIf="gameState.get('timer') < 0">
+        <div class="spinner-layer spinner-green-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+        </div>
       </div>
 
       <div class="scoreContainer">
-        <div class="scoreLabel">
+        <div class="scoreContainer-scoreLabel">
           {{ gameState.getIn(['opponent', 'name'])}}
         </div>
-        <div class="score">
+        <div class="scoreContainer-score">
           <i class="material-icons tiny" [ngClass]="{ 'green-text': isTruthy, 'red-text': !isTruthy }"
              *ngFor="let isTruthy of gameState.getIn(['opponent','answers'])">
             {{ isTruthy ? 'thumb_up' : 'thumb_down' }}
           </i>
         </div>
-        <div class="scoreContainer-message">{{ gameState.getIn(['opponent', 'message']) }}</div>
       </div>
+      <div class="scoreContainer-message scoreContainer-message_left">{{ gameState.getIn(['me', 'message']) }}</div>
+      <div class="scoreContainer-message scoreContainer-message_right">{{ gameState.getIn(['opponent', 'message']) }}</div>
     </div>
 
     <div class="fretboardContainer" *ngIf="pageState === 'play' && gameState.get('isInProgress')">
+
       <div class="selectedChordLabel">
-        {{ pageState === 'study' ? selectedChord.name : '?' }}
+        {{ gameState.getIn(['me', 'message']) ? gameState.getIn(['question', 'name']) : '?' }}
       </div>
+
 
       <fretboard [chord]="gameState.get('question')"></fretboard>
 
-      <div class="configurationRow answerRow">
+      <div class="configurationRow answerRow" *ngIf="isPlayable(gameState.getIn(['me', 'message']))">
         <div class="btn answerBtn"
+             *ngFor="let item of gameState.getIn(['question', 'answers'])"
+             (click)="chordGameService.answerHandler$.next(item.get('isCorrect'))">
+          {{ item.get('answer') }}
+        </div>
+      </div>
+
+      <div class="configurationRow answerRow" *ngIf="!isPlayable(gameState.getIn(['me', 'message']))">
+        <div class="btn answerBtn disabled"
+             [ngClass]="{ 'answerBtn_correct': item.get('isCorrect')}"
              *ngFor="let item of gameState.getIn(['question', 'answers'])"
              (click)="chordGameService.answerHandler$.next(item.get('isCorrect'))">
           {{ item.get('answer') }}
